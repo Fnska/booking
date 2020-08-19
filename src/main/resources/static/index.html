@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Home Page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+<body ng-app="bookingApp">
+    <div class="container" ng-controller="customersCtrl">
+        <div class="row">
+            <div class="col-3">
+                <div class="panel-heading">ADD CUSTOMER FORM</div>
+                    <form>
+                        <div class="form-group">
+                            <input class="form-control" type="text" placeholder="Name" ng-model="name">
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" type="text" placeholder="Surname" ng-model="surname">
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" type="email" placeholder="Email" ng-model="email">
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" type="text" placeholder="Date" ng-model="date">
+                        </div>
+                        <button class="btn btn-primary" ng-click="submit(name, surname, email, date)">Submit</button>
+                    </form>
+            </div>
+            <div class="col-9">
+                <div class="panel panel-default">
+                    <div class="panel-heading">CUSTOMERS</div>
+                    <div class="panel-body">
+                        <ul class="list-group-item" ng-repeat="customer in customers">
+                            {{customer.id}}. {{customer.name}} {{customer.surname}}
+                            <a href="mailto:{{customer.email}}" class="badge badge-primary">{{customer.email}}</a>
+                            <li class="list-group-item list-group-item-secondary" ng-repeat="item in customer.customerReservations">
+                                {{item.reservation.id}}. {{item.reservation.reservationDate}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<script type="text/javascript" src="js/angular.min.js"></script>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/main.js"></script>
+</body>
+</html>
