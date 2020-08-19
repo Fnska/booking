@@ -1,10 +1,8 @@
 package io.fnska.booking.web.rest.v1;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import io.fnska.booking.domain.CustomerReservation;
 import io.fnska.booking.domain.Reservation;
 import io.fnska.booking.domain.dto.CustomerReservationDTO;
-import io.fnska.booking.domain.view.Views;
 import io.fnska.booking.service.CustomerReservationService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,7 +18,6 @@ public class ReservationController {
     private CustomerReservationService customerReservationService;
 
     @GetMapping("/reservations")
-    @JsonView(Views.ReservationView.class)
     public ResponseEntity<List<Reservation>> getAllReservedDays() {
         List<Reservation> reservations = customerReservationService.findAll();
         return new ResponseEntity<>(reservations, HttpStatus.OK);

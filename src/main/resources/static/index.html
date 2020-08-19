@@ -31,11 +31,11 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">CUSTOMERS</div>
                     <div class="panel-body">
-                        <ul class="list-group-item" ng-repeat="customer in customers">
-                            {{customer.id}}. {{customer.name}} {{customer.surname}}
-                            <a href="mailto:{{customer.email}}" class="badge badge-primary">{{customer.email}}</a>
-                            <li class="list-group-item list-group-item-secondary" ng-repeat="item in customer.customerReservations">
-                                {{item.reservation.id}}. {{item.reservation.reservationDate}}
+                        <ul class="list-group-item" ng-repeat="reservation in reservations">
+                            {{reservation.id}}. {{reservation.reservationDate}}
+                            <li class="list-group-item list-group-item-secondary" ng-repeat="item in reservation.customerReservations">
+                                {{item.customer.id}}. {{item.customer.name}} {{item.customer.surname}}
+                                <a href="mailto:{{item.customer.email}}" class="badge badge-primary">{{item.customer.email}}</a>
                             </li>
                         </ul>
                     </div>
