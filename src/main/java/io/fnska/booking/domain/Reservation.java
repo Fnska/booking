@@ -1,18 +1,11 @@
 package io.fnska.booking.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,5 +25,57 @@ public class Reservation {
     public void removeCustomer(Customer customer) {
         this.customers.remove(customer);
         customer.getReservations().remove(this);
+    }
+
+    @Override
+    public int hashCode() {
+        return 42;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Reservation other = (Reservation) obj;
+        return id != null && id.equals(other.getId());
+    }
+
+    @Override
+    public String toString() {
+        return "Reservation{" +
+                "id=" + id +
+                ", reservationDate=" + reservationDate +
+                '}';
+    }
+
+    public Reservation() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Date getReservationDate() {
+        return reservationDate;
+    }
+
+    public void setReservationDate(Date reservationDate) {
+        this.reservationDate = reservationDate;
+    }
+
+    public Set<Customer> getCustomers() {
+        return customers;
+    }
+
+    public void setCustomers(Set<Customer> customers) {
+        this.customers = customers;
     }
 }
