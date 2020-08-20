@@ -1,15 +1,19 @@
 package io.fnska.booking.repository;
 
 import io.fnska.booking.domain.Reservation;
-import io.fnska.booking.domain.dto.ReservationProjection;
+import io.fnska.booking.repository.projections.ReservationProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
+
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
     Page<ReservationProjection> findBy(Pageable pageable);
 
-    Page<ReservationProjection> findByCustomers_Email(String email, Pageable pageable);
+    Page<ReservationProjection> findReservationProjectionsByCustomers_Email(String email, Pageable pageable);
+    Page<Reservation> findReservationsByCustomers_Email(String email, Pageable pageable);
+    boolean existsByReservationDate(Date reservationDate);
 }

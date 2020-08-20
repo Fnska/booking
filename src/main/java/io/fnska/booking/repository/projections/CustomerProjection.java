@@ -1,4 +1,4 @@
-package io.fnska.booking.domain.dto;
+package io.fnska.booking.repository.projections;
 
 public interface CustomerProjection {
     String getName();

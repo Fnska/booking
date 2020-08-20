@@ -1,6 +1,6 @@
 package io.fnska.booking.web.rest.v1;
 
-import io.fnska.booking.domain.dto.CustomerProjection;
+import io.fnska.booking.repository.projections.CustomerProjection;
 import io.fnska.booking.repository.CustomerRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -19,7 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1")
 @AllArgsConstructor
-public class CustomerController {
+public class CustomerControllerV1 {
     private CustomerRepository customerRepository;
 
     @GetMapping("/customers")
@@ -32,7 +32,7 @@ public class CustomerController {
     public ResponseEntity<List<CustomerProjection>> getCustomersByDate(
             @RequestParam(name = "date") Date date,
             @PageableDefault(sort = {"name"}) Pageable pageable) {
-        Page<CustomerProjection> page = customerRepository.findByReservations_ReservationDate(date, pageable);
+        Page<CustomerProjection> page = customerRepository.findCustomerProjectionsByReservations_ReservationDate(date, pageable);
         return new ResponseEntity<>(page.getContent(), HttpStatus.OK);
     }
 
