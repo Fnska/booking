@@ -1,16 +1,15 @@
 package io.fnska.booking.repository;
 
 import io.fnska.booking.domain.Reservation;
+import io.fnska.booking.domain.dto.ReservationProjection;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-
-import java.sql.Date;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
-    boolean existsReservationByReservationDate(Date reservationDate);
+    Page<ReservationProjection> findBy(Pageable pageable);
 
-    @Query("SELECT r.id FROM Reservation r where r.reservationDate = ?1")
-    Long getReservationIdByReservationDate(Date reservationDate);
+    Page<ReservationProjection> findByCustomers_Email(String email, Pageable pageable);
 }

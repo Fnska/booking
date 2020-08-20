@@ -1,12 +1,12 @@
 package io.fnska.booking.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -24,7 +24,19 @@ public class Customer {
 
     private String surname;
 
-    @OneToMany(mappedBy = "customer")
-    @JsonIgnore
-    private List<CustomerReservation> customerReservations;
+    @ManyToMany
+    @JoinTable(name = "customer_reservation",
+            joinColumns = {@JoinColumn(name = "fk_customer")},
+            inverseJoinColumns = {@JoinColumn(name = "fk_reservation")})
+    private Set<Reservation> reservations = new HashSet<>();
+
+    public void addReservation(Reservation reservation) {
+        this.reservations.add(reservation);
+        reservation.getCustomers().add(this);
+    }
+
+    public void removeReservation(Reservation reservation) {
+        this.reservations.remove(reservation);
+        reservation.getCustomers().remove(this);
+    }
 }

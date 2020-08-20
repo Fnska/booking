@@ -7,38 +7,18 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
 </head>
 <body ng-app="bookingApp">
-    <div class="container" ng-controller="customersCtrl">
+    <div class="container" ng-controller="dateCtrl">
         <div class="row">
-            <div class="col-3">
-                <div class="panel-heading">ADD CUSTOMER FORM</div>
-                    <form>
-                        <div class="form-group">
-                            <input class="form-control" type="text" placeholder="Name" ng-model="name">
-                        </div>
-                        <div class="form-group">
-                            <input class="form-control" type="text" placeholder="Surname" ng-model="surname">
-                        </div>
-                        <div class="form-group">
-                            <input class="form-control" type="email" placeholder="Email" ng-model="email">
-                        </div>
-                        <div class="form-group">
-                            <input class="form-control" type="text" placeholder="Date" ng-model="date">
-                        </div>
-                        <button class="btn btn-primary" ng-click="submit(name, surname, email, date)">Submit</button>
-                    </form>
-            </div>
-            <div class="col-9">
-                <div class="panel panel-default">
-                    <div class="panel-heading">CUSTOMERS</div>
-                    <div class="panel-body">
-                        <ul class="list-group-item" ng-repeat="reservation in reservations">
-                            {{reservation.id}}. {{reservation.reservationDate}}
-                            <li class="list-group-item list-group-item-secondary" ng-repeat="item in reservation.customerReservations">
-                                {{item.customer.id}}. {{item.customer.name}} {{item.customer.surname}}
-                                <a href="mailto:{{item.customer.email}}" class="badge badge-primary">{{item.customer.email}}</a>
-                            </li>
-                        </ul>
-                    </div>
+            <div class="card" style="width: 18rem;" ng-repeat="item in reservations">
+                <div ng-controller="customerCtrl">
+                    <button class="btn btn-secondary btn-block"
+                            type="button"
+                            ng-click="getCustomers(item.reservationDate)">
+                        {{item.reservationDate}}
+                    </button>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item" ng-repeat="cust in customers">{{cust.name}}</li>
+                    </ul>
                 </div>
             </div>
         </div>

@@ -1,13 +1,13 @@
 package io.fnska.booking.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -18,10 +18,19 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "reservation_date", unique = true)
+    @Column(name = "reservation_date")
     private Date reservationDate;
 
-    @OneToMany(mappedBy = "reservation", fetch = FetchType.EAGER)
-    @JsonIgnoreProperties({"id", "reservation"})
-    private List<CustomerReservation> customerReservations;
+    @ManyToMany(mappedBy = "reservations")
+    private Set<Customer> customers = new HashSet<>();
+
+    public void addCustomer(Customer customer) {
+        this.customers.add(customer);
+        customer.getReservations().add(this);
+    }
+
+    public void removeCustomer(Customer customer) {
+        this.customers.remove(customer);
+        customer.getReservations().remove(this);
+    }
 }
