@@ -11,7 +11,7 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "reservation_date")
+    @Column(nullable = false, unique = true, name = "reservation_date")
     private Date reservationDate;
 
     @ManyToMany(mappedBy = "reservations")
