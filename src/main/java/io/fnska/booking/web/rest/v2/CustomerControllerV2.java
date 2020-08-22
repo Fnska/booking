@@ -61,16 +61,10 @@ public class CustomerControllerV2 {
     ) {
         Customer customer = converter.dtoToEntity(dto);
         Optional<Customer> opt = customerRepository.findOneByEmail(customer.getEmail());
-        if (!opt.isPresent()) {
-            customer = customerRepository.save(customer);
-            Reservation reservation = reservationRepository.findOneByReservationDate(date);
-            customer.addReservation(reservation);
-            customer = customerRepository.save(customer);
-            CustomerDto dtoFromDb = converter.entityToDto(customer);
-            return new ResponseEntity<>(dtoFromDb, HttpStatus.CREATED);
-        }
 
-        customer = opt.get();
+        final Customer finalCustomer = customer;
+        customer = opt.orElseGet(() -> customerRepository.save(finalCustomer));
+
         Reservation reservation = reservationRepository.findOneByReservationDate(date);
         customer.addReservation(reservation);
         customer = customerRepository.save(customer);
