@@ -5,24 +5,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/main.css">
 </head>
 <body ng-app="bookingApp">
-    <div class="container" ng-controller="dateCtrl">
-        <div class="row">
-            <div class="card" style="width: 18rem;" ng-repeat="item in reservations">
-                <div ng-controller="customerCtrl">
-                    <button class="btn btn-secondary btn-block"
-                            type="button"
-                            ng-click="getCustomers(item.reservationDate)">
-                        {{item.reservationDate}}
-                    </button>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item" ng-repeat="cust in customers">{{cust.name}}</li>
-                    </ul>
+<div class="container mt-2">
+    <div class="row" ng-controller="customerCtrl">
+        <div class="col" ng-controller="dateCtrl">
+            <form class="form-row">
+                <div class="form-group col-10">
+                    <input ng-model="reservationDate" type="text" class="form-control" placeholder="Date">
                 </div>
+                <button ng-click="addReservationDate(reservationDate)" type="submit" class="btn btn-primary mb-4 col-2">Add</button>
+            </form>
+            <div class="btn-group-vertical btn-group-toggle btn-block" data-toggle="buttons">
+                <label class="btn btn-outline-info"
+                       ng-repeat="item in reservations"
+                       ng-click="getCustomers(item.reservationDate)">
+                    <input type="radio" name="options" autocomplete="off"> {{item.reservationDate}}
+                </label>
             </div>
         </div>
+
+        <div class="col">
+            <form class="form-row">
+                <div class="form-group col-3">
+                    <input ng-model="name" type="text" class="form-control" placeholder="Name">
+                </div>
+                <div class="form-group col-3">
+                    <input ng-model="surname" type="text" class="form-control" placeholder="Surname">
+                </div>
+                <div class="form-group col-3">
+                    <input ng-model="email" type="email" class="form-control" placeholder="Email" required>
+                </div>
+                <button ng-click="addCustomerOnDate(name, surname, email, resDate)" type="submit" class="btn btn-primary mb-4 col-3">Add</button>
+            </form>
+            <ul class="list-group list-group-flush">
+                <h2>Customers on <span class="badge badge-info">{{resDate}}</span></h2>
+                <li class="list-group-item" ng-repeat="customer in customers">{{customer.name}} {{customer.surname}}
+                    <button class="btn btn-warning" type="button">Edit</button>
+                    <button class="btn btn-danger" type="button">Delete</button>
+                </li>
+            </ul>
+        </div>
     </div>
+</div>
 
 
 <script type="text/javascript" src="js/angular.min.js"></script>
