@@ -1,5 +1,5 @@
 # Booking
-This repository contains the training booking application. A Customer can add a Reservation for a chosen date from UI. ManyToMany Association.
+This repository contains the training booking application. A Customer can add/delete a Reservation for a chosen date from UI. ManyToMany Association.
 
 ## Using
 - Java 8
