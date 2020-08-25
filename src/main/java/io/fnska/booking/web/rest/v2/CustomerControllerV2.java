@@ -71,4 +71,21 @@ public class CustomerControllerV2 {
         CustomerDto dtoFromDb = converter.entityToDto(customer);
         return new ResponseEntity<>(dtoFromDb, HttpStatus.CREATED);
     }
+
+    @PutMapping("/customers/deleteFromDate")
+    public ResponseEntity deleteCustomerFromReservation(@RequestParam(name = "date") Date date,
+                                                        @RequestBody CustomerDto dto
+    ) {
+        Customer customer = converter.dtoToEntity(dto);
+        Optional<Customer> opt = customerRepository.findOneByEmail(customer.getEmail());
+        if (opt.isPresent()) {
+            customer = opt.get();
+        } else {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        Reservation reservation = reservationRepository.findOneByReservationDate(date);
+        customer.removeReservation(reservation);
+        customerRepository.save(customer);
+        return new ResponseEntity(HttpStatus.OK);
+    }
 }
