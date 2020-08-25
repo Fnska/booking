@@ -20,7 +20,7 @@
             <div class="btn-group-vertical btn-group-toggle btn-block" data-toggle="buttons">
                 <label class="btn btn-outline-info"
                        ng-repeat="item in reservations"
-                       ng-click="getCustomers(item.reservationDate)">
+                       ng-click="getCustomersByDate(item.reservationDate)">
                     <input type="radio" name="options" autocomplete="off"> {{item.reservationDate}}
                 </label>
             </div>
@@ -43,7 +43,7 @@
                 <h2>Customers on <span class="badge badge-info">{{resDate}}</span></h2>
                 <li class="list-group-item" ng-repeat="customer in customers">{{customer.name}} {{customer.surname}}
                     <button class="btn btn-warning" type="button">Edit</button>
-                    <button class="btn btn-danger" type="button">Delete</button>
+                    <button class="btn btn-danger" ng-click="deleteCustomerFromDate(customer.email, resDate)" type="button">Delete</button>
                 </li>
             </ul>
         </div>

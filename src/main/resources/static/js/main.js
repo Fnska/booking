@@ -1,33 +1,91 @@
 var app = angular.module("bookingApp", []);
 
-app.controller("dateCtrl", function($scope, $http) {
+app.service('ReservationService', function($http) {
+    this.getAllReservations = function() {
+        return $http({
+            method : 'GET',
+            url : 'api/v2/reservations'
+        });
+    }
+
+    this.addReservation = function (reservationDate) {
+        return $http({
+            method : 'POST',
+            url : 'api/v2/reservations',
+            data : {
+                reservationDate: reservationDate
+            }
+        });
+    }
+});
+
+app.service('CustomerService', function($http) {
+    this.getCustomersByDate = function (date) {
+        return $http({
+            method : 'GET',
+            url : 'api/v2/customers/search?date=' + date
+        });
+    }
+
+    this.addCustomerOnDate = function (name, surname, email, date) {
+        return $http({
+            method : 'POST',
+            url : 'api/v2/customers/addOnDate?date=' + date,
+            data : {
+                name: name,
+                surname: surname,
+                email: email
+            }
+        });
+    }
+
+    this.deleteCustomerFromDate = function (email, date) {
+        return $http({
+            method : 'PUT',
+            url : 'api/v2/customers/deleteFromDate?date=' + date,
+            data : {
+                email: email
+            }
+        });
+    }
+});
+
+app.controller("dateCtrl", function($scope, ReservationService) {
     $scope.addReservationDate = function(reservationDate) {
-        var body = {"reservationDate": reservationDate};
-        $http.post('http://localhost:8080/api/v2/reservations/', JSON.stringify(body)).then(function(response) {
-            $http.get('http://localhost:8080/api/v2/reservations').then(function(response) {
+        ReservationService.addReservation(reservationDate).then(function(response) {
+            ReservationService.getAllReservations().then(function(response) {
                 $scope.reservations = response.data;
             });
         });
     };
-    $http.get('http://localhost:8080/api/v2/reservations').then(function(response) {
+    ReservationService.getAllReservations().then(function(response) {
         $scope.reservations = response.data;
     });
 });
 
-app.controller("customerCtrl", function($scope, $http) {
-    $scope.getCustomers = function(date) {
-        $http.get('http://localhost:8080/api/v2/customers/search?date=' + date).then(function(response) {
+app.controller("customerCtrl", function($scope, $http, CustomerService) {
+    $scope.getCustomersByDate = function(date) {
+        CustomerService.getCustomersByDate(date).then(function(response) {
             $scope.customers = response.data;
             $scope.resDate = date;
         });
     }
+
     $scope.addCustomerOnDate = function(name, surname, email, date) {
-        var body = {"name": name, "surname": surname, "email": email};
-        $http.post('http://localhost:8080/api/v2/customers/addOnDate?date=' + date, JSON.stringify(body)).then(function(response) {
-            $http.get('http://localhost:8080/api/v2/customers/search?date=' + date).then(function(response) {
+        CustomerService.addCustomerOnDate(name, surname, email, date).then(function(response) {
+            CustomerService.getCustomersByDate(date).then(function(response) {
                 $scope.customers = response.data;
                 $scope.resDate = date;
             });
         });
-    };
+    }
+
+    $scope.deleteCustomerFromDate = function(email, date) {
+        CustomerService.deleteCustomerFromDate(email, date).then(function(response) {
+            CustomerService.getCustomersByDate(date).then(function(response) {
+                $scope.customers = response.data;
+                $scope.resDate = date;
+            });
+        });
+    }
 });
