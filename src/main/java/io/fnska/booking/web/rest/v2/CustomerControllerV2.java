@@ -84,8 +84,12 @@ public class CustomerControllerV2 {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
         Reservation reservation = reservationRepository.findOneByReservationDate(date);
-        customer.removeReservation(reservation);
-        customerRepository.save(customer);
-        return new ResponseEntity(HttpStatus.OK);
+        boolean isRemoved = customer.removeReservation(reservation);
+        if(isRemoved) {
+            customerRepository.save(customer);
+            return new ResponseEntity(HttpStatus.OK);
+        } else {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
     }
 }

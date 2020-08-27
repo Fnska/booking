@@ -30,9 +30,9 @@ public class Customer {
         reservation.getCustomers().add(this);
     }
 
-    public void removeReservation(Reservation reservation) {
-        this.reservations.remove(reservation);
+    public boolean removeReservation(Reservation reservation) {
         reservation.getCustomers().remove(this);
+        return this.reservations.remove(reservation);
     }
 
     @Override
